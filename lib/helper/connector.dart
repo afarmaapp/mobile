@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
-import 'package:app/shared/Login.dart';
+import 'package:app/modules/login/controllers/login_controller.dart/login_controller.dart';
+import 'package:app/shared/controllers/user/user_controller.dart';
+import 'package:app/shared/login.dart';
 import 'package:app/shared/logged_in_notifier_service.dart';
-import 'package:app/shared/models/User.dart';
+import 'package:app/shared/models/user/user_model.dart';
 import 'package:app/shared/return.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'config.dart';
 
@@ -43,11 +47,6 @@ class Connector {
         },
         context: context);
   }
-
-  // Future<void> _updateContent() async {
-  //   DepartmentRepository().refreshDepartments();
-  //   BannerRepository().refreshBanners();
-  // }
 
   void handleStatus(int stat, BuildContext context) {
     switch (stat) {
@@ -97,6 +96,32 @@ class Connector {
     }
   }
 
+  User? buildFromToken(String key) {
+    if (key == "") return null;
+    Map<String, dynamic> json = parseJWTToken(key)!;
+    return User(
+      id: json['identity'] as String,
+      nome: (json['name'] as String),
+      email: (json['params'] as Map<String, dynamic>)['Email'] as String,
+      telefone: (json['params'] as Map<String, dynamic>)['Telefone'] as String,
+    );
+  }
+
+  Map<String, dynamic>? parseJWTToken(String? token) {
+    if (token == null) {
+      return null;
+    }
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      return null;
+    }
+    final payload = parts[1];
+    var normalized = base64Url.normalize(payload);
+    var resp = utf8.decode(base64Url.decode(normalized));
+    final payloadMap = json.decode(resp);
+    return payloadMap;
+  }
+
   Future<String> getUserKey() async {
     if (userKey == null) {
       final dir = await getApplicationDocumentsDirectory();
@@ -105,7 +130,7 @@ class Connector {
         if (await file.exists()) {
           final key = await file.readAsString();
           userKey = key;
-          User.buildFromToken(key);
+          buildFromToken(key);
           return key;
         } else {
           return 'noKey';
@@ -126,13 +151,10 @@ class Connector {
     final Directory dir = await getApplicationDocumentsDirectory();
     try {
       final file = File('${dir.path}/usrToken.txt');
-      file.exists().then((exists) {
-        file.exists().then((exists) {
-          if (exists) {
-            file.delete();
-          }
-        });
-      });
+      bool exists = await file.exists();
+      if (exists) {
+        file.delete();
+      }
     } catch (error) {
       print(error);
     }
@@ -141,55 +163,12 @@ class Connector {
   Future<void> _setUserKey(String rawKey) async {
     final dir = await getApplicationDocumentsDirectory();
     String key = jsonDecode(rawKey)['key'];
-    User.buildFromToken(key);
+    buildFromToken(key);
     try {
       final file = File('${dir.path}/usrToken.txt');
       file.writeAsString(key);
     } catch (error) {
       print('error saving key file');
-    }
-  }
-
-  static Future<Environment> _getUserEnvironment() async {
-    final dir = await getApplicationDocumentsDirectory();
-    try {
-      final file = File('${dir.path}/env.txt');
-      if (await file.exists()) {
-        int intEnv = int.tryParse(file.readAsStringSync()) ?? 0;
-        DefaultURL.env = Environment.values[intEnv];
-        print('environment setted ${DefaultURL.env}!');
-      } else {
-        print('no environment set!');
-      }
-    } catch (error) {
-      print('no environment set!');
-    }
-    return DefaultURL.env; // Environment.prod;
-  }
-
-  static Future<void> _resetUserEnvironment() async {
-    final dir = await getApplicationDocumentsDirectory();
-    // DefaultURL.env = Environment.prod;
-    try {
-      final file = File('${dir.path}/env.txt');
-      file.exists().then((exists) {
-        if (exists) {
-          file.delete();
-        }
-      });
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  static Future<void> _setUserEnvironment(Environment environment) async {
-    final dir = await getApplicationDocumentsDirectory();
-    DefaultURL.env = environment;
-    try {
-      final file = File('${dir.path}/env.txt');
-      file.writeAsStringSync(environment.index.toString());
-    } catch (error) {
-      print(error);
     }
   }
 
@@ -378,6 +357,7 @@ class Connector {
   }
 
   Future<Return> loginWithParams(Login input) async {
+    final userController = GetIt.I.get<UserController>();
     try {
       Environment env;
       switch (input.loginModifier()) {
@@ -410,9 +390,8 @@ class Connector {
       log("Finalizando loginWithParams HTTP CODE ${response.statusCode}");
 
       if (response.statusCode! < 400) {
-        await Connector._setUserEnvironment(env);
         await _setUserKey(jsonEncode(response.data));
-        await User.fetch();
+        await userController.fetch();
       }
 
       return Return(
@@ -433,16 +412,18 @@ class Connector {
   }
 
   Future<bool> hasKey() async {
-    await Connector._getUserEnvironment();
     String key = await getUserKey();
     return (key != 'noKey' && key != '');
   }
 
-  static Future<void> logout() async {
-    await Connector.resetUserKey();
-    await Connector._resetUserEnvironment();
+  Future<void> logout() async {
+    final userController = GetIt.I.get<UserController>();
+    final loginController = GetIt.I.get<LoginController>();
 
-    User.instance = null;
+    await Connector.resetUserKey();
+
+    userController.user = null;
+    loginController.logged = Logged.notLogged;
 
     LoggedInNotifierService().setLogged(false);
   }

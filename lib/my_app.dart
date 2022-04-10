@@ -1,7 +1,9 @@
+import 'package:app/modules/login/controllers/login_controller.dart/login_controller.dart';
+import 'package:app/modules/login/login_page.dart';
 import 'package:app/shared/components/main_tab_controller.dart';
-import 'package:app/shared/models/User.dart';
+import 'package:app/shared/controllers/user/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 // import 'package:flutter_restart/flutter_restart.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'helper/app_colors.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder<Widget>(
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return MaterialApp(home: Splash());
+            return const MaterialApp(home: Splash());
           } else {
             if (snapshot.hasData) {
               return snapshot.data!;
@@ -62,17 +64,25 @@ class MyApp extends StatelessWidget {
   }
 
   Future<Widget> _mainWidget() async {
+    final userController = GetIt.I.get<UserController>();
+
+    final c = Connector(
+      baseURL: DefaultURL.apiURL(),
+      baseURI: DefaultURI.afarma,
+    );
     // Dados do dispositivo
     CurrentDeviceInfo().getCurrentDeviceInfo();
 
     // Pega os dados do usuário
-    if (await Connector(
-      baseURL: DefaultURL.apiURL(),
-      baseURI: DefaultURI.afarma,
-    ).hasKey()) {
-      User.fetch();
+    if (await c.hasKey()) {
+      userController.buildFromToken(await c.getUserKey());
+      await userController.fetch();
     }
 
-    return MainTabController();
+    if (userController.user != null) {
+      return MainTabController();
+    } else {
+      return const LoginPage();
+    }
   }
 }

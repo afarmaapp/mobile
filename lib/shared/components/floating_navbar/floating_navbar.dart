@@ -1,4 +1,9 @@
+import 'package:app/helper/app_colors.dart';
+import 'package:app/modules/home/components/cotation_details/controllers/cotation_details_controller/cotation_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'floating_navbar_item.dart';
 import 'package:flutter/material.dart';
@@ -67,40 +72,39 @@ class _FloatingNavbarState extends State<FloatingNavbar> {
     return BottomAppBar(
         color: Colors.transparent,
         elevation: 0,
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Container(
-                  padding: EdgeInsets.only(bottom: 15, top: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(widget.borderRadius),
-                      color: widget.backgroundColor,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 3,
-                            offset: Offset(0, 2))
-                      ]),
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      mainAxisSize: MainAxisSize.max,
-                      children: items.map((f) {
-                        return widget.itemBuilder(context, f);
-                      }).toList(),
-                    ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: Container(
+                padding: const EdgeInsets.only(bottom: 15, top: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
+                  color: widget.backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 3,
+                      offset: const Offset(0, 2),
+                    )
+                  ],
+                ),
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    children: items.map((f) {
+                      return widget.itemBuilder(context, f);
+                    }).toList(),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ));
   }
 }
@@ -119,13 +123,14 @@ ItemBuilder _defaultItemBuilder({
   required double borderRadius,
   required bool displayTitle,
 }) {
+  final cotationController = GetIt.I.get<CotationController>();
   return (BuildContext context, FloatingNavbarItem item) => Expanded(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               decoration: BoxDecoration(
                   color: currentIndex == items.indexOf(item)
                       ? selectedBackgroundColor
@@ -136,10 +141,7 @@ ItemBuilder _defaultItemBuilder({
                   onTap(items.indexOf(item));
                 },
                 borderRadius: BorderRadius.circular(8),
-                child: Container(
-                    //max-width for each item
-                    //24 is the padding from left and right
-                    // * 110 instead of * 100 fixed the 'overflow by 5 pixels issue
+                child: SizedBox(
                     width: MediaQuery.of(context).size.width *
                             (100 / (items.length * 110)) -
                         15,
@@ -149,10 +151,11 @@ ItemBuilder _defaultItemBuilder({
                         Column(
                           children: [
                             item.image != null
-                                ? Container(
+                                ? SizedBox(
                                     height: iconSize * 1.6,
                                     child: ColorFiltered(
-                                      colorFilter: ColorFilter.matrix(<double>[
+                                      colorFilter:
+                                          const ColorFilter.matrix(<double>[
                                         0.2126,
                                         0.7152,
                                         0.0722,
@@ -174,50 +177,66 @@ ItemBuilder _defaultItemBuilder({
                                         1,
                                         0,
                                       ]),
-                                      //     currentIndex == items.indexOf(item)
-                                      //         ? ColorFilter.mode(
-                                      //             Colors.transparent,
-                                      //             BlendMode.multiply,
-                                      //           )
-                                      //         : ColorFilter.matrix(<double>[
-                                      //             0.2126,
-                                      //             0.7152,
-                                      //             0.0722,
-                                      //             0,
-                                      //             0,
-                                      //             0.2126,
-                                      //             0.7152,
-                                      //             0.0722,
-                                      //             0,
-                                      //             0,
-                                      //             0.2126,
-                                      //             0.7152,
-                                      //             0.0722,
-                                      //             0,
-                                      //             0,
-                                      //             0,
-                                      //             0,
-                                      //             0,
-                                      //             1,
-                                      //             0,
-                                      //           ]),
                                       child: Container(child: item.image),
                                     ),
                                   )
-                                : Icon(
-                                    item.icon,
-                                    color: currentIndex == items.indexOf(item)
-                                        ? (item.selectedColor != null
-                                            ? item.selectedColor
-                                            : selectedItemColor)
-                                        : (item.unselectedColor != null
-                                            ? item.unselectedColor
-                                            : unselectedItemColor),
-                                    size: iconSize,
+                                : Observer(
+                                    builder: (_) => item.title!.toLowerCase() ==
+                                                'cesta' &&
+                                            cotationController
+                                                .products.isNotEmpty
+                                        ? Stack(
+                                            children: [
+                                              Icon(
+                                                item.icon,
+                                                color: currentIndex ==
+                                                        items.indexOf(item)
+                                                    ? (item.selectedColor ??
+                                                        selectedItemColor)
+                                                    : (item.unselectedColor ??
+                                                        unselectedItemColor),
+                                                size: iconSize,
+                                              ),
+                                              Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: Container(
+                                                  width: 13,
+                                                  height: 13,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.primary,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    '!',
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize: 10,
+                                                      color: AppColors.white,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Icon(
+                                            item.icon,
+                                            color: currentIndex ==
+                                                    items.indexOf(item)
+                                                ? (item.selectedColor ??
+                                                    selectedItemColor)
+                                                : (item.unselectedColor ??
+                                                    unselectedItemColor),
+                                            size: iconSize,
+                                          ),
                                   ),
                             (displayTitle && item.title != null)
                                 ? AutoSizeText(
-                                    (item.title != null ? item.title : '')!,
+                                    (item.title ?? ''),
                                     minFontSize: 10,
                                     style: TextStyle(
                                         color:
@@ -236,21 +255,21 @@ ItemBuilder _defaultItemBuilder({
                             : Positioned(
                                 top: 0,
                                 right: 15,
-                                child: new Container(
-                                  padding: EdgeInsets.all(1),
-                                  decoration: new BoxDecoration(
+                                child: Container(
+                                  padding: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     minWidth: 12,
                                     minHeight: 12,
                                   ),
-                                  child: new Text(
+                                  child: Text(
                                     item.count == -1
                                         ? ''
                                         : item.count.toString(),
-                                    style: new TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 8,
                                     ),

@@ -1,12 +1,20 @@
 import 'package:app/helper/app_colors.dart';
+import 'package:app/helper/config.dart';
+import 'package:app/helper/connector.dart';
 import 'package:app/modules/cart/cart_page.dart';
 import 'package:app/modules/home/home_page.dart';
+import 'package:app/modules/login/controllers/login_controller.dart/login_controller.dart';
+import 'package:app/modules/login/login_page.dart';
+import 'package:app/modules/profile/profile_page.dart';
 import 'package:app/shared/components/floating_navbar/floating_navbar.dart';
 import 'package:app/shared/components/floating_navbar/floating_navbar_item.dart';
+import 'package:app/shared/controllers/user/user_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 
 class TabIndex extends ChangeNotifier {
   int index = 0;
@@ -37,7 +45,11 @@ class MainTabController extends StatefulWidget {
 }
 
 class _MainTabControllerState extends State<MainTabController> {
+  final userController = GetIt.I.get<UserController>();
+  final loginController = GetIt.I.get<LoginController>();
   final TabIndex _index = TabIndex();
+  final c = Connector(baseURL: DefaultURL.apiURL(), baseURI: DefaultURI.afarma);
+  bool hasKey = false;
 
   final List<FloatingNavbarItem> _navBarItems = [
     FloatingNavbarItem(icon: Icons.home, title: 'Home'),
@@ -63,15 +75,6 @@ class _MainTabControllerState extends State<MainTabController> {
 
     _buildControllers();
 
-    // Cart().addListener(() {
-    //   if (mounted) {
-    //     FloatingNavbarItem navbarItem =
-    //         _navBarItems.firstWhere((element) => element.title == 'Cesta');
-    //     navbarItem.count = Cart().meds.length;
-    //     setState(() {});
-    //   }
-    // });
-
     _homeScrollController
         .addListener(() => _handleScrollController(_homeScrollController));
     _cartScrollController
@@ -80,41 +83,63 @@ class _MainTabControllerState extends State<MainTabController> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return DefaultTabController(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: GestureDetector(
-            onTap: () {
-              _pageController.jumpToPage(0);
-              _index.index = 0;
-              setState(() {});
-            },
-            child: Image.asset(
-              'assets/images/logo-red.png',
-              width: MediaQuery.of(context).size.width * 0.24,
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                FeatherIcons.user,
-                color: AppColors.grey,
+      child: Observer(builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: GestureDetector(
+              onTap: () {
+                _pageController.jumpToPage(0);
+                _index.index = 0;
+                setState(() {});
+              },
+              child: Image.asset(
+                'assets/images/logo-red.png',
+                width: MediaQuery.of(context).size.width * 0.24,
               ),
-            )
-          ],
-        ),
-        body: PageView(
-          children: _controllers,
-          controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),
-        ),
-        bottomNavigationBar: _floatingTabBar(),
-        extendBody: true,
-      ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  if (userController.user != null) {
+                    await userController.fetch();
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  }
+                },
+                icon: Icon(
+                  FeatherIcons.user,
+                  color: AppColors.grey,
+                ),
+              )
+            ],
+          ),
+          body: PageView(
+            children: _controllers,
+            controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
+          ),
+          bottomNavigationBar: _floatingTabBar(),
+          extendBody: true,
+        );
+      }),
       length: _controllers.length,
       initialIndex: 0,
     );
@@ -142,9 +167,24 @@ class _MainTabControllerState extends State<MainTabController> {
   }
 
   void _changePage(int newIndex) {
+    // if (newIndex == 1) {
+    //   if (userController.user != null) {
+    //     _index.index = newIndex;
+    //     _pageController.jumpToPage(_index.index);
+    //     setState(() {});
+    //   } else {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => const LoginPage(),
+    //       ),
+    //     );
+    //   }
+    // } else {
     _index.index = newIndex;
     _pageController.jumpToPage(_index.index);
     setState(() {});
+    // }
   }
 
   void _buildControllers() {

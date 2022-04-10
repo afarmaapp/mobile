@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._(); // this basically makes it so you can instantiate this class
 
-  static const _primaryValue = 0xffe91d2c;
+  static const _primaryValue = 0xffD93C43;
   static const _whiteValue = 0xffffffff;
+  static const _blackValue = 0xff000000;
   static const _greyValue = 0xff909090;
   static const _secondaryValue = 0xff00aacb;
   static const _selectedValue = 0xff00A9D3;
@@ -36,6 +37,8 @@ class AppColors {
   static MaterialColor primary = createMaterialColor(_primaryValue);
 
   static MaterialColor white = createMaterialColor(_whiteValue);
+
+  static MaterialColor black = createMaterialColor(_blackValue);
 
   static MaterialColor grey = createMaterialColor(_greyValue);
 

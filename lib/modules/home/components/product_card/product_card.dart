@@ -1,3 +1,4 @@
+import 'package:app/modules/home/models/product/product_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -9,8 +10,10 @@ class ProductCard extends StatefulWidget {
   const ProductCard({
     Key? key,
     required this.onTap,
+    required this.product,
   }) : super(key: key);
 
+  final Product product;
   final VoidCallback onTap;
 
   @override
@@ -41,19 +44,27 @@ class _ProductCardState extends State<ProductCard> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Image.asset(
-                  'assets/images/afarmaGeneric.png',
+                Image.network(
+                  'https://images.afarma.app.br/afarmaimg/${widget.product.ean}.jpg',
+                  errorBuilder: ((context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/afarmaGeneric.png',
+                      width: deviceWidth * 0.35,
+                      height: deviceWidth * 0.3,
+                      fit: BoxFit.contain,
+                    );
+                  }),
                   width: deviceWidth * 0.35,
                   height: deviceWidth * 0.3,
                   fit: BoxFit.contain,
                 ),
                 AutoSizeText(
-                  'Lorem Ipsum Dolor atsu met aboa not ficou',
+                  widget.product.nome,
                   maxLines: 2,
                   softWrap: true,
                   style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w700,
-                    fontSize: 17,
+                    fontSize: 14,
                   ),
                 ),
               ],
