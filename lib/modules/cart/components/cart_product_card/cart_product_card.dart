@@ -43,9 +43,17 @@ class _CartProductCardState extends State<CartProductCard> {
       margin: const EdgeInsets.only(right: 10, left: 10, bottom: 8),
       child: Row(
         children: [
-          Image.asset(
-            'assets/images/afarmaGeneric.png',
+          Image.network(
+            'https://images.afarma.app.br/afarmaimg/${widget.product.product.ean}.jpg',
+            errorBuilder: ((context, error, stackTrace) {
+              return Image.asset(
+                'assets/images/afarmaGeneric.png',
+                width: deviceWidth * 0.2,
+                fit: BoxFit.contain,
+              );
+            }),
             width: deviceWidth * 0.2,
+            fit: BoxFit.contain,
           ),
           Expanded(
             child: Padding(

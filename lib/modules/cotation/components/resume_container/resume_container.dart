@@ -1,3 +1,4 @@
+import 'package:app/helper/app_colors.dart';
 import 'package:app/modules/cart/models/cotation/cotation_model.dart';
 import 'package:app/modules/home/components/cotation_details/controllers/cotation_details_controller/cotation_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -33,20 +34,15 @@ class _ResumeContainerState extends State<ResumeContainer> {
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          const AutoSizeText(
-            "Resumo do Pedido",
-            maxLines: 3,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[300],
+              border: Border.all(
+                color: AppColors.grey,
+                width: 1,
+              ),
+              color: Colors.transparent,
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.4,
@@ -89,37 +85,62 @@ class _ResumeContainerState extends State<ResumeContainer> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  thickness: 1,
-                  height: 20,
-                  color: Colors.grey[600],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/logo-red.png',
-                      width: 90,
-                    ),
-                    Text(
-                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                          .format(afarmaCotation.total),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        color: Colors.grey[900],
-                        decoration: TextDecoration.none,
-                        decorationThickness: 2,
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.primary,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  "A AFARMA GARANTE SEMPRE O MENOR PREÇO",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    color: AppColors.white,
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo-red.png',
+                        width: 90,
+                      ),
+                      Text(
+                        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                            .format(afarmaCotation.total),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: Colors.grey[900],
+                          decoration: TextDecoration.none,
+                          decorationThickness: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

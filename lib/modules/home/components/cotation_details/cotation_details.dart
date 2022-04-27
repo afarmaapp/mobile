@@ -44,9 +44,17 @@ class _CotationDetailsState extends State<CotationDetails> {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          'assets/images/afarmaGeneric.png',
+                        Image.network(
+                          'https://images.afarma.app.br/afarmaimg/${controller.selectedProduct!.ean}.jpg',
+                          errorBuilder: ((context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/afarmaGeneric.png',
+                              width: deviceWidth * 0.3,
+                              fit: BoxFit.contain,
+                            );
+                          }),
                           width: deviceWidth * 0.3,
+                          fit: BoxFit.contain,
                         ),
                         Expanded(
                           child: Column(

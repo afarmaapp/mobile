@@ -34,20 +34,15 @@ class _PrintResumeContainerState extends State<PrintResumeContainer> {
       width: 1080,
       child: Column(
         children: [
-          const AutoSizeText(
-            "Resumo do Pedido",
-            maxLines: 3,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColors.white.withOpacity(0.2),
+              border: Border.all(
+                color: AppColors.grey,
+                width: 1,
+              ),
+              color: Colors.transparent,
             ),
             width: 1080,
             height: 1920 * 0.27,
@@ -67,22 +62,28 @@ class _PrintResumeContainerState extends State<PrintResumeContainer> {
                                 maxLines: 2,
                                 softWrap: true,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 5.0),
                             Text(
                               '${afarmaCotation.itens[index].quantidade}x',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                             const SizedBox(width: 25.0),
                             Text(
                               NumberFormat.currency(
                                       locale: 'pt_BR', symbol: 'R\$')
                                   .format(afarmaCotation.itens[index].valor),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -90,37 +91,62 @@ class _PrintResumeContainerState extends State<PrintResumeContainer> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  thickness: 1,
-                  height: 20,
-                  color: Colors.grey[600],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/logo-red.png',
-                      width: 90,
-                    ),
-                    Text(
-                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                          .format(afarmaCotation.total),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        color: AppColors.white,
-                        decoration: TextDecoration.none,
-                        decorationThickness: 2,
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.primary,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  "A AFARMA GARANTE SEMPRE O MENOR PREÇO",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    color: AppColors.white,
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo-red.png',
+                        width: 90,
+                      ),
+                      Text(
+                        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                            .format(afarmaCotation.total),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: Colors.grey[900],
+                          decoration: TextDecoration.none,
+                          decorationThickness: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -32,8 +32,13 @@ class _CotationPageState extends State<CotationPage> {
     screenshotController
         .captureFromWidget(
       Container(
-        decoration: BoxDecoration(
-          color: AppColors.primary,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'assets/images/backgrounds/cotacaobg.jpg',
+            ),
+            fit: BoxFit.cover,
+          ),
         ),
         padding: const EdgeInsets.only(
           left: 1080 * 0.02,
@@ -55,81 +60,56 @@ class _CotationPageState extends State<CotationPage> {
             ),
             Container(
               padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.white.withOpacity(0.2),
-              ),
               width: 1080,
               child: Column(
                 children: [
-                  cotationController.cotations.length > 1
-                      ? const AutoSizeText(
-                          "Simulamos a sua compra em outras farmácias e vamos garantir o preço mais baixo. \nClique nas caixas e confira!",
-                          maxLines: 3,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      : Container(),
-                  cotationController.cotations.length > 1
-                      ? const SizedBox(
-                          height: 15.0,
-                        )
-                      : Container(),
-                  SizedBox(
-                    width: 1080 * 0.8,
-                    height: 90,
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      alignment: WrapAlignment.center,
-                      children: List.generate(
-                        cotationController.cotations.length,
-                        (index) => cotationController.cotations[index].total >=
-                                cotationController.cotations
-                                    .where(
-                                        (element) => element.loja == 'AFARMA')
-                                    .first
-                                    .total
-                            ? Container(
-                                width: 100,
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.grey, width: 1.0)),
-                                child: Column(
-                                  children: [
-                                    Center(
-                                        child: Image.asset(
-                                      'assets/images/${cotationController.cotations[index].loja == "AFARMA" ? "logo-red.png" : "logo-raia.png"}',
-                                      fit: BoxFit.fitWidth,
-                                    )),
-                                    const SizedBox(height: 10.0),
-                                    SizedBox(
-                                      width: 70,
-                                      child: AutoSizeText(
-                                        NumberFormat.currency(
-                                                locale: 'pt_BR', symbol: 'R\$')
-                                            .format(cotationController
-                                                .cotations[index].total),
-                                        maxLines: 1,
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 15,
-                                          color: AppColors.black,
-                                        ),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.center,
+                    children: List.generate(
+                      cotationController.cotations.length,
+                      (index) => cotationController.cotations[index].total >=
+                              cotationController.cotations
+                                  .where((element) => element.loja == 'AFARMA')
+                                  .first
+                                  .total
+                          ? Container(
+                              width: 100,
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey, width: 1.0)),
+                              child: Column(
+                                children: [
+                                  Center(
+                                      child: Image.asset(
+                                    'assets/images/${cotationController.cotations[index].loja == "AFARMA" ? "logo-red.png" : "logo-raia.png"}',
+                                    fit: BoxFit.fitWidth,
+                                  )),
+                                  const SizedBox(height: 10.0),
+                                  SizedBox(
+                                    width: 70,
+                                    child: AutoSizeText(
+                                      NumberFormat.currency(
+                                              locale: 'pt_BR', symbol: 'R\$')
+                                          .format(cotationController
+                                              .cotations[index].total),
+                                      maxLines: 1,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 15,
+                                        color: AppColors.black,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(),
-                      ),
-                      runSpacing: 15.0,
-                      spacing: 15.0,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Container(),
                     ),
+                    runSpacing: 15.0,
+                    spacing: 15.0,
                   ),
                 ],
               ),
@@ -187,9 +167,9 @@ class _CotationPageState extends State<CotationPage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              'assets/images/backgrounds/loginWhiteBackground.png',
+              'assets/images/backgrounds/cotacaobg.jpg',
             ),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         padding: EdgeInsets.only(
@@ -212,27 +192,9 @@ class _CotationPageState extends State<CotationPage> {
             ),
             Container(
               padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[300],
-              ),
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  cotationController.cotations.length > 1
-                      ? const AutoSizeText(
-                          "Simulamos a sua compra em outras farmácias e vamos garantir o preço mais baixo. \nClique nas caixas e confira!",
-                          maxLines: 3,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center,
-                        )
-                      : Container(),
-                  cotationController.cotations.length > 1
-                      ? const SizedBox(
-                          height: 15.0,
-                        )
-                      : Container(),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.center,
@@ -261,7 +223,7 @@ class _CotationPageState extends State<CotationPage> {
               expanded: true,
               onTap: () {
                 launch(
-                    'https://api.whatsapp.com/send?1=pt_br&phone=+552198695-2438&text=Ol%C3%A1,%20essa%20%C3%A9%20a%20cota%C3%A7%C3%A3o%20que%20fiz%20no%20site%20e%20gostaria%20de%20comprar:%20https://localhost:8080/%23/produtos/${cotationController.cotations.first.id}');
+                    'https://api.whatsapp.com/send?1=pt_br&phone=+552198695-2438&text=Ol%C3%A1,%20essa%20%C3%A9%20a%20cota%C3%A7%C3%A3o%20que%20fiz%20no%20site%20e%20gostaria%20de%20comprar:%20https://www.afarmaapp.com.br/%23/cotacao-item/${cotationController.cotations.first.id}');
               },
             ),
             SizedBox(
