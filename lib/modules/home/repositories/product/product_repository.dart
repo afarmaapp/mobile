@@ -18,6 +18,13 @@ class ProductRepository {
 
       for (var json in respList) {
         Map<String, dynamic> jsonParsed = jsonDecode(json["data"]);
+        (jsonParsed['valor_concorrente'] as List).removeWhere((obj) =>
+            obj['concorrente'] == null || obj['valor_concorrente'] == null);
+        (jsonParsed['produto_similar'] as List).removeWhere((obj) =>
+            obj['id'] == null ||
+            obj['nome'] == null ||
+            obj['ean'] == null ||
+            obj['valor'] == null);
         products.add(Product.fromJson(jsonParsed));
       }
 

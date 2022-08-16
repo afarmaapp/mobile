@@ -118,12 +118,20 @@ class _HomePageState extends State<HomePage> {
                                   cotationController.selectedProduct ==
                                       productController.products[index]) {
                                 cotationController.toogleShowCotationDetails(
-                                  MediaQuery.of(context).size.height * 0.32,
+                                  (MediaQuery.of(context).size.height * 0.32) +
+                                      (30 *
+                                          productController.products[index]
+                                              .concorrentes.length),
                                   productController.products[index],
                                 );
                               } else {
                                 cotationController.changeProduct(
-                                    productController.products[index]);
+                                    productController.products[index],
+                                    (MediaQuery.of(context).size.height *
+                                            0.32) +
+                                        (30 *
+                                            productController.products[index]
+                                                .concorrentes.length));
                               }
                             },
                           ),

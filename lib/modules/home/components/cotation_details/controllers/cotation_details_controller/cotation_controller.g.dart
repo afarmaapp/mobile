@@ -6,10 +6,11 @@ part of 'cotation_controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$CotationController on _CotationControllerBase, Store {
-  final _$opacityAtom = Atom(name: '_CotationControllerBase.opacity');
+  late final _$opacityAtom =
+      Atom(name: '_CotationControllerBase.opacity', context: context);
 
   @override
   double get opacity {
@@ -24,7 +25,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$heightAtom = Atom(name: '_CotationControllerBase.height');
+  late final _$heightAtom =
+      Atom(name: '_CotationControllerBase.height', context: context);
 
   @override
   double get height {
@@ -39,8 +41,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$cotationStateAtom =
-      Atom(name: '_CotationControllerBase.cotationState');
+  late final _$cotationStateAtom =
+      Atom(name: '_CotationControllerBase.cotationState', context: context);
 
   @override
   CotationState get cotationState {
@@ -55,8 +57,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$selectedProductAtom =
-      Atom(name: '_CotationControllerBase.selectedProduct');
+  late final _$selectedProductAtom =
+      Atom(name: '_CotationControllerBase.selectedProduct', context: context);
 
   @override
   Product? get selectedProduct {
@@ -71,8 +73,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$selectedProductQntAtom =
-      Atom(name: '_CotationControllerBase.selectedProductQnt');
+  late final _$selectedProductQntAtom = Atom(
+      name: '_CotationControllerBase.selectedProductQnt', context: context);
 
   @override
   int get selectedProductQnt {
@@ -87,7 +89,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$cotationsAtom = Atom(name: '_CotationControllerBase.cotations');
+  late final _$cotationsAtom =
+      Atom(name: '_CotationControllerBase.cotations', context: context);
 
   @override
   ObservableList<Cotation> get cotations {
@@ -102,7 +105,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$productsAtom = Atom(name: '_CotationControllerBase.products');
+  late final _$productsAtom =
+      Atom(name: '_CotationControllerBase.products', context: context);
 
   @override
   ObservableList<CartProduct> get products {
@@ -117,8 +121,8 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$durationInMillisecondsAtom =
-      Atom(name: '_CotationControllerBase.durationInMilliseconds');
+  late final _$durationInMillisecondsAtom = Atom(
+      name: '_CotationControllerBase.durationInMilliseconds', context: context);
 
   @override
   int get durationInMilliseconds {
@@ -134,16 +138,18 @@ mixin _$CotationController on _CotationControllerBase, Store {
     });
   }
 
-  final _$changeProductAsyncAction =
-      AsyncAction('_CotationControllerBase.changeProduct');
+  late final _$changeProductAsyncAction =
+      AsyncAction('_CotationControllerBase.changeProduct', context: context);
 
   @override
-  Future changeProduct(Product product) {
-    return _$changeProductAsyncAction.run(() => super.changeProduct(product));
+  Future changeProduct(Product product, double? heightValue) {
+    return _$changeProductAsyncAction
+        .run(() => super.changeProduct(product, heightValue));
   }
 
-  final _$toogleShowCotationDetailsAsyncAction =
-      AsyncAction('_CotationControllerBase.toogleShowCotationDetails');
+  late final _$toogleShowCotationDetailsAsyncAction = AsyncAction(
+      '_CotationControllerBase.toogleShowCotationDetails',
+      context: context);
 
   @override
   Future toogleShowCotationDetails(double heightValue, Product? product) {
@@ -151,16 +157,16 @@ mixin _$CotationController on _CotationControllerBase, Store {
         .run(() => super.toogleShowCotationDetails(heightValue, product));
   }
 
-  final _$goToCotationAsyncAction =
-      AsyncAction('_CotationControllerBase.goToCotation');
+  late final _$goToCotationAsyncAction =
+      AsyncAction('_CotationControllerBase.goToCotation', context: context);
 
   @override
   Future goToCotation() {
     return _$goToCotationAsyncAction.run(() => super.goToCotation());
   }
 
-  final _$_CotationControllerBaseActionController =
-      ActionController(name: '_CotationControllerBase');
+  late final _$_CotationControllerBaseActionController =
+      ActionController(name: '_CotationControllerBase', context: context);
 
   @override
   dynamic changeQuantity(ChangeQuantity change) {

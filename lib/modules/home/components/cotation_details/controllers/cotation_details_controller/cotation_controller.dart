@@ -9,6 +9,7 @@ part 'cotation_controller.g.dart';
 class CotationController = _CotationControllerBase with _$CotationController;
 
 enum ChangeQuantity { add, remove }
+
 enum CotationState { initial, loading, success, error }
 
 abstract class _CotationControllerBase with Store {
@@ -81,8 +82,11 @@ abstract class _CotationControllerBase with Store {
   }
 
   @action
-  changeProduct(Product product) async {
+  changeProduct(Product product, double? heightValue) async {
     opacity = 0;
+    if (heightValue != null) {
+      height = heightValue;
+    }
     await Future.delayed(const Duration(milliseconds: 400));
     selectedProduct = product;
     selectedProductQnt = 1;

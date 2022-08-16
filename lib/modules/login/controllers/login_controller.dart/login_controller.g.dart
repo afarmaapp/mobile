@@ -6,10 +6,11 @@ part of 'login_controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LoginController on _LoginControllerBase, Store {
-  final _$inputsAtom = Atom(name: '_LoginControllerBase.inputs');
+  late final _$inputsAtom =
+      Atom(name: '_LoginControllerBase.inputs', context: context);
 
   @override
   Login get inputs {
@@ -24,8 +25,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$googleAuthStateAtom =
-      Atom(name: '_LoginControllerBase.googleAuthState');
+  late final _$googleAuthStateAtom =
+      Atom(name: '_LoginControllerBase.googleAuthState', context: context);
 
   @override
   GoogleAuthState get googleAuthState {
@@ -40,7 +41,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$loggedAtom = Atom(name: '_LoginControllerBase.logged');
+  late final _$loggedAtom =
+      Atom(name: '_LoginControllerBase.logged', context: context);
 
   @override
   Logged get logged {
@@ -55,7 +57,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$localLoginAtom = Atom(name: '_LoginControllerBase.localLogin');
+  late final _$localLoginAtom =
+      Atom(name: '_LoginControllerBase.localLogin', context: context);
 
   @override
   bool get localLogin {
@@ -70,7 +73,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$showErrorsAtom = Atom(name: '_LoginControllerBase.showErrors');
+  late final _$showErrorsAtom =
+      Atom(name: '_LoginControllerBase.showErrors', context: context);
 
   @override
   bool get showErrors {
@@ -85,7 +89,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$authStateAtom = Atom(name: '_LoginControllerBase.authState');
+  late final _$authStateAtom =
+      Atom(name: '_LoginControllerBase.authState', context: context);
 
   @override
   AuthState get authState {
@@ -100,7 +105,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$registerStateAtom = Atom(name: '_LoginControllerBase.registerState');
+  late final _$registerStateAtom =
+      Atom(name: '_LoginControllerBase.registerState', context: context);
 
   @override
   RegisterState get registerState {
@@ -115,8 +121,8 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$photoUrlGoogleAtom =
-      Atom(name: '_LoginControllerBase.photoUrlGoogle');
+  late final _$photoUrlGoogleAtom =
+      Atom(name: '_LoginControllerBase.photoUrlGoogle', context: context);
 
   @override
   String get photoUrlGoogle {
@@ -131,8 +137,9 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
-  final _$loginWithEmailAndPasswordAsyncAction =
-      AsyncAction('_LoginControllerBase.loginWithEmailAndPassword');
+  late final _$loginWithEmailAndPasswordAsyncAction = AsyncAction(
+      '_LoginControllerBase.loginWithEmailAndPassword',
+      context: context);
 
   @override
   Future loginWithEmailAndPassword() {
@@ -140,23 +147,24 @@ mixin _$LoginController on _LoginControllerBase, Store {
         .run(() => super.loginWithEmailAndPassword());
   }
 
-  final _$signUpAsyncAction = AsyncAction('_LoginControllerBase.signUp');
+  late final _$signUpAsyncAction =
+      AsyncAction('_LoginControllerBase.signUp', context: context);
 
   @override
   Future signUp(RegisterDetails registerDetails) {
     return _$signUpAsyncAction.run(() => super.signUp(registerDetails));
   }
 
-  final _$googleSignInAsyncAction =
-      AsyncAction('_LoginControllerBase.googleSignIn');
+  late final _$googleSignInAsyncAction =
+      AsyncAction('_LoginControllerBase.googleSignIn', context: context);
 
   @override
   Future googleSignIn() {
     return _$googleSignInAsyncAction.run(() => super.googleSignIn());
   }
 
-  final _$_LoginControllerBaseActionController =
-      ActionController(name: '_LoginControllerBase');
+  late final _$_LoginControllerBaseActionController =
+      ActionController(name: '_LoginControllerBase', context: context);
 
   @override
   dynamic changeEmail(String value) {

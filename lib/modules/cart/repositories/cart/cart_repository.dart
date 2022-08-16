@@ -93,22 +93,14 @@ class CartRepository {
         total: double.parse(cotationParsed['total'].toString()),
       );
 
-      Cotation raia = Cotation(
-        id: cotationId,
-        itens: [],
-        loja: 'RAIA',
-        total: 0,
-      );
-
-      if (cotationParsed['total_raia'] > 0 &&
-          cotationParsed['total_raia'] != cotationParsed['total']) {
-        raia = Cotation(
-          id: cotationId,
-          itens: [],
-          loja: 'RAIA',
-          total: double.parse(cotationParsed['total_raia'].toString()),
-        );
-      }
+      List<Cotation> concorrentes = (cotationParsed['total_concorrente']
+              as List)
+          .map((e) => e = Cotation(
+              id: cotationId,
+              itens: [],
+              loja: e['concorrente'],
+              total: double.parse(e['total_concorrente'].toStringAsFixed(2))))
+          .toList();
 
       for (var i = 0; i < respDetailedCotation.returnObject.length; i++) {
         Map<String, dynamic> parsed =
@@ -124,25 +116,38 @@ class CartRepository {
           ),
         );
 
-        if (cotationParsed['total_raia'] > 0 &&
-            cotationParsed['total_raia'] != cotationParsed['total']) {
-          raia.itens.add(
-            CotationItem(
-              id: parsed['cotacao_id'],
-              nome: parsed['nome'],
-              quantidade: parsed['quantidade'],
-              valor: double.parse(parsed['valor_raia'].toString()),
-              total: double.parse(parsed['total_raia'].toString()),
-            ),
-          );
+        if (parsed['detalhamento_concorrente'].length > 0) {
+          for (var i = 0; i < parsed['detalhamento_concorrente'].length; i++) {
+            concorrentes
+                .firstWhere((obj) =>
+                    obj.loja ==
+                    parsed['detalhamento_concorrente'][i]['concorrente'])
+                .itens
+                .add(
+                  CotationItem(
+                    id: parsed['cotacao_id'],
+                    nome: parsed['nome'],
+                    quantidade: parsed['quantidade'],
+                    valor: double.parse(parsed['detalhamento_concorrente'][i]
+                            ['valor_concorrente']
+                        .toString()),
+                    total: double.parse(parsed['detalhamento_concorrente'][i]
+                            ['total_concorrente']
+                        .toString()),
+                  ),
+                );
+          }
         }
       }
       cotationController.cotations = ObservableList.of([]);
 
       cotationController.cotations.add(afarma);
-      if (cotationParsed['total_raia'] > 0 &&
-          cotationParsed['total_raia'] != cotationParsed['total']) {
-        cotationController.cotations.add(raia);
+      if (cotationParsed['total_concorrente'].length > 0) {
+        for (var i = 0; i < cotationParsed['total_concorrente'].length; i++) {
+          cotationController.cotations.add(concorrentes.firstWhere((obj) =>
+              obj.loja ==
+              cotationParsed['total_concorrente'][i]['concorrente']));
+        }
       }
 
       return 200;

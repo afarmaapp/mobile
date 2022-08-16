@@ -94,7 +94,7 @@ class _CotationDetailsState extends State<CotationDetails> {
                                           )
                                         ],
                                       ),
-                                      child: Icon(Icons.remove),
+                                      child: const Icon(Icons.remove),
                                     ),
                                   ),
                                   AutoSizeText(
@@ -123,7 +123,7 @@ class _CotationDetailsState extends State<CotationDetails> {
                                           )
                                         ],
                                       ),
-                                      child: Icon(Icons.add),
+                                      child: const Icon(Icons.add),
                                     ),
                                   ),
                                 ],
@@ -135,32 +135,40 @@ class _CotationDetailsState extends State<CotationDetails> {
                     ),
                     Column(
                       children: [
-                        controller.selectedProduct!.valorRaia != null &&
-                                controller.selectedProduct!.valorRaia! >
-                                    controller.selectedProduct!.valor
-                            ? Container(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/logo-raia.png',
-                                      width: deviceWidth * 0.2,
-                                    ),
-                                    Text(
-                                      NumberFormat.currency(
-                                              locale: 'pt_BR', symbol: 'R\$')
-                                          .format(
-                                        controller.selectedProduct!.valorRaia,
-                                      ),
-                                      style: GoogleFonts.roboto(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                        controller.selectedProduct!.concorrentes != null
+                            ? Column(
+                                children: List.generate(
+                                    controller
+                                        .selectedProduct!.concorrentes!.length,
+                                    (index) => Container(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/logo-${controller.selectedProduct!.concorrentes[index].concorrente.replaceAll(' ', '-').toLowerCase()}.png',
+                                                width: deviceWidth * 0.2,
+                                              ),
+                                              Text(
+                                                NumberFormat.currency(
+                                                        locale: 'pt_BR',
+                                                        symbol: 'R\$')
+                                                    .format(
+                                                  controller
+                                                      .selectedProduct!
+                                                      .concorrentes![index]
+                                                      .valorConcorrente,
+                                                ),
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )),
                               )
                             : Container(),
                         Container(

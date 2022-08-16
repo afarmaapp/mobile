@@ -6,10 +6,11 @@ part of 'product_controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProductController on _ProductControllerBase, Store {
-  final _$productsAtom = Atom(name: '_ProductControllerBase.products');
+  late final _$productsAtom =
+      Atom(name: '_ProductControllerBase.products', context: context);
 
   @override
   ObservableList<Product> get products {
@@ -24,7 +25,8 @@ mixin _$ProductController on _ProductControllerBase, Store {
     });
   }
 
-  final _$filterAtom = Atom(name: '_ProductControllerBase.filter');
+  late final _$filterAtom =
+      Atom(name: '_ProductControllerBase.filter', context: context);
 
   @override
   String get filter {
@@ -39,8 +41,8 @@ mixin _$ProductController on _ProductControllerBase, Store {
     });
   }
 
-  final _$productsStateAtom =
-      Atom(name: '_ProductControllerBase.productsState');
+  late final _$productsStateAtom =
+      Atom(name: '_ProductControllerBase.productsState', context: context);
 
   @override
   ProductState get productsState {
@@ -55,16 +57,16 @@ mixin _$ProductController on _ProductControllerBase, Store {
     });
   }
 
-  final _$getProductsAsyncAction =
-      AsyncAction('_ProductControllerBase.getProducts');
+  late final _$getProductsAsyncAction =
+      AsyncAction('_ProductControllerBase.getProducts', context: context);
 
   @override
   Future getProducts() {
     return _$getProductsAsyncAction.run(() => super.getProducts());
   }
 
-  final _$_ProductControllerBaseActionController =
-      ActionController(name: '_ProductControllerBase');
+  late final _$_ProductControllerBaseActionController =
+      ActionController(name: '_ProductControllerBase', context: context);
 
   @override
   dynamic changeFilter(String value) {

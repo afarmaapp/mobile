@@ -38,7 +38,7 @@ class _CotationCardState extends State<CotationCard> {
           children: [
             Center(
                 child: Image.asset(
-              'assets/images/${widget.cotation.loja == "AFARMA" ? "logo-red.png" : "logo-raia.png"}',
+              'assets/images/${widget.cotation.loja == "AFARMA" ? "logo-red.png" : "logo-${widget.cotation.loja.replaceAll(' ', '-').toLowerCase()}.png"}',
               fit: BoxFit.fitWidth,
             )),
             const SizedBox(height: 10.0),
@@ -72,9 +72,7 @@ class _CotationCardState extends State<CotationCard> {
                     child: Column(
                       children: [
                         Image.asset(
-                          widget.cotation.loja == "AFARMA"
-                              ? "assets/images/logo-red.png"
-                              : "assets/images/logo-raia.png",
+                          'assets/images/${widget.cotation.loja == "AFARMA" ? "logo-red.png" : "logo-${widget.cotation.loja.replaceAll(' ', '-').toLowerCase()}.png"}',
                           height: 30,
                         ),
                         const SizedBox(
